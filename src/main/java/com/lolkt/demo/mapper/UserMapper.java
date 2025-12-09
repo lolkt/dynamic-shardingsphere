@@ -1,0 +1,46 @@
+package com.lolkt.demo.mapper;/*
+ * Copyright © ${project.inceptionYear} organization baomidou
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+import com.lolkt.demo.entity.UserPO;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+
+/**
+ * @author EDY
+ */
+public interface UserMapper {
+
+    @Select("select * from t_user where id =#{id}")
+    UserPO selectById(Integer id);
+
+    @Select("select * from t_user")
+    List<UserPO> selectUsers();
+
+    @Insert("insert into t_user (name,role) values (#{name},#{role})")
+    boolean addUser(@Param("name") String name, @Param("role") String role);
+
+    @Update("update t_user set name =#{name} where id =#{id}")
+    void updateUser(UserPO user);
+
+    @Delete("delete from t_user where id = #{id}")
+    void deleteUserById(Long id);
+
+    @Delete("delete from t_user")
+    void deleteAll();
+
+}
