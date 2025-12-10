@@ -4,64 +4,29 @@ spring:
   datasource:
     dynamic:
       primary: sharding
-#      datasource:
-#        test:
-#          driver-class-name: com.mysql.cj.jdbc.Driver
-#          url: jdbc:mysql://localhost:3306/test_master
-#          username: root
-#          password: 123456
+      datasource:
+        uid:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://192.168.1.116:3307/uid_center?useSSL=false
+          username: root
+          password: dmyz@2025#
 
   shardingsphere:
     datasource:
-      names: ds-master,ds-slave,ds-master-0,ds-master-1
+      names: ds-master
       # 不需要分表的默认数据库库：主库
       ds-master:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/tt_master
+        jdbc-url: jdbc:mysql:///192.168.1.116:3307/tt_master?useSSL=false
         username: root
-        password: 123456
-      # 分库分表的第1个库：主库
-      ds-master-0:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/tt_shard_01
-        username: root
-        password: 123456
-      # 分库分表的第2个库：主库
-      ds-master-1:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/tt_shard_02
-        username: root
-        password: 123456
-      # 不需要分表的默认数据库库：从库
-      ds-slave:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/tt_slave
-        username: root
-        password: 123456
+        password: dmyz@2025#
 
     # 配置分表策略
     sharding:
       # 默认数据源，未分片的表默认执行库
       default-data-source-name: ds
-
-      # 默认分库策略：customer_id
-      default-database-strategy:
-        inline:
-          sharding-column: customer_id
-          algorithm-expression: ds$->{customer_id % 2}
-
       tables:
-        # tm_customer单独分库策略，以主键id为分片键，分库策略为id % 8
-        t_customer:
-          actual-data-nodes: ds$->{0..1}.t_customer
-          database-strategy:
-            inline:
-              sharding-column: id
-              algorithm-expression: ds$->{id % 2}
 
         t_order:
           # 配置数据节点，这里是chatid分表
@@ -73,25 +38,9 @@ spring:
               sharding-column: customer_id
               algorithm-expression: t_order_${customer_id % 2}
 
-      # 读写分离
-      master-slave-rules:
-        ds:
-          master-data-source-name: ds-master
-          slave-data-source-names: ds-slave
-        ds0:
-          master-data-source-name: ds-master-0
-          slave-data-source-names: ds-master-0
-        ds1:
-          master-data-source-name: ds-master-1
-          slave-data-source-names: ds-master-1
     props:
       sql:
         show: true
 
-
-sharding:
-  jdbc:
-    config:
-      file: classpath:sharding-jdbc-test.yaml
 
 

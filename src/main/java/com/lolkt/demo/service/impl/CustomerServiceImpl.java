@@ -15,7 +15,7 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMapper customerMapper;
 
     @Override
-    public CustomerPO selectById(Integer id) {
+    public CustomerPO selectById( Long id) {
         return customerMapper.selectById(id);
     }
 

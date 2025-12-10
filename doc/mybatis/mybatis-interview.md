@@ -49,7 +49,7 @@ public interface StuMapper {
 
 	List<Student> getAllStu();
 
-	List<Student> getAllStu(@Param("id") Integer id);
+	List<Student> getAllStu(@Param("id")  Long id);
 }
 ```
 

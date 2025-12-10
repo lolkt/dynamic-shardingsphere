@@ -4,7 +4,7 @@ import lombok.Data;
 @Data
 public class OrderDto {
 
-    private Integer id;
+    private Long id;
 
     /**
      *

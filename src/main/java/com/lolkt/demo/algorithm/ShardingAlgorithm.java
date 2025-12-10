@@ -1,3 +1,4 @@
+/*
 package com.lolkt.demo.algorithm;
 
 import com.google.common.collect.BoundType;
@@ -13,22 +14,26 @@ import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+*/
 /**
  * 基于日期的标准分片算法
  *
  * @author lolkt
  * @date 2022/8/18
- */
+ *//*
+
 @Slf4j
 public class ShardingAlgorithm implements PreciseShardingAlgorithm<Date>, RangeShardingAlgorithm<Date> {
 
 
-    /**
+    */
+/**
      * 生成真实表名
      * @param logicTableName ：逻辑表名
      * @param date ： 时间戳
      * @return ： 物理表名
-     */
+     *//*
+
     private String getRealTableName(String logicTableName, Date date) {
         // 取得时间字段
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -37,9 +42,11 @@ public class ShardingAlgorithm implements PreciseShardingAlgorithm<Date>, RangeS
         return logicTableName + "_" + dateStr;
     }
 
-    /**
+    */
+/**
      * 精确分片算法类名称，用于=和IN
-     */
+     *//*
+
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<Date> preciseShardingValue) {
 
@@ -99,4 +106,4 @@ public class ShardingAlgorithm implements PreciseShardingAlgorithm<Date>, RangeS
 
         return targetTables;
     }
-}
+}*/

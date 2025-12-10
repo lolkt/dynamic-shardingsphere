@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    CustomerPO selectById(Integer id);
+    CustomerPO selectById( Long id);
 
     List<CustomerPO> selectAll();
 

@@ -3,6 +3,7 @@ package com.lolkt.demo.controller;
 import com.lolkt.demo.dto.OrderDto;
 import com.lolkt.demo.entity.OrderPO;
 import com.lolkt.demo.service.OrderService;
+import com.lolkt.demo.support.UidGeneratorHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,14 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public OrderPO selectById(@PathVariable Integer id) {
+    public OrderPO selectById(@PathVariable  Long id) {
         return orderService.selectById(id);
     }
 
     @PostMapping("/addOrder")
     public OrderPO addOrder(@RequestBody OrderDto OrderDto) {
         OrderPO Order = new OrderPO();
+        Order.setId(UidGeneratorHolder.nextId());
         BeanUtils.copyProperties(OrderDto, Order);
         orderService.addOrder(Order);
         return Order;

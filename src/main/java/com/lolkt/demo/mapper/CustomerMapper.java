@@ -26,13 +26,13 @@ import java.util.List;
 public interface CustomerMapper {
 
     @Select("select * from t_customer where id =#{id}")
-    CustomerPO selectById(Integer id);
+    CustomerPO selectById( Long id);
 
     @Select("select * from t_customer")
     List<CustomerPO> selectCustomers();
 
     @Insert("insert into t_customer (id,mobile,age) values (#{id},#{mobile},#{age})")
-    boolean addCustomer(@Param("id") Integer id, @Param("mobile") String mobile, @Param("age") Integer age);
+    boolean addCustomer(@Param("id")  Long id, @Param("mobile") String mobile, @Param("age") Integer age);
 
     @Update("update t_customer set mobile =#{mobile} where id =#{id}")
     void updateCustomer(CustomerPO Customer);

@@ -26,7 +26,7 @@ import java.util.List;
 public interface OrderMapper {
 
     @Select("select * from t_order where id =#{id}")
-    OrderPO selectById(Integer id);
+    OrderPO selectById( Long id);
 
     @Select("select * from t_order")
     List<OrderPO> selectOrders();

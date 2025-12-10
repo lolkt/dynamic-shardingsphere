@@ -26,7 +26,7 @@ import java.util.List;
 public interface UserMapper {
 
     @Select("select * from t_user where id =#{id}")
-    UserPO selectById(Integer id);
+    UserPO selectById( Long id);
 
     @Select("select * from t_user")
     List<UserPO> selectUsers();

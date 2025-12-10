@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CustomerPO {
 
-    private Integer id;
+    private Long id;
 
     /**
      * 手机号

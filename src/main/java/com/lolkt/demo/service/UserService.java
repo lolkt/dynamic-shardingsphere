@@ -22,7 +22,7 @@ import java.util.List;
 
 public interface UserService {
 
-    UserPO selectById(Integer id);
+    UserPO selectById( Long id);
 
     List<UserPO> selectAll();
 

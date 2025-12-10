@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public UserPO selectById(Integer id) {
+    public UserPO selectById( Long id) {
         return userMapper.selectById(id);
     }
 

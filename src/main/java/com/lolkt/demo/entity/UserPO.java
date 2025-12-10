@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserPO {
 
-    private Integer id;
+    private Long id;
 
     /**
      * 姓名

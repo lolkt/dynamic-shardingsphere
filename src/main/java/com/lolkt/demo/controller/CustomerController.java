@@ -37,7 +37,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerPO selectById(@PathVariable Integer id) {
+    public CustomerPO selectById(@PathVariable  Long id) {
         return customerService.selectById(id);
     }
 

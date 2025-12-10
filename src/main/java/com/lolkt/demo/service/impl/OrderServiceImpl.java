@@ -15,7 +15,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
 
     @Override
-    public OrderPO selectById(Integer id) {
+    public OrderPO selectById( Long id) {
         return orderMapper.selectById(id);
     }
 

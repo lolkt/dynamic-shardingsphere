@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据id查询用户")
-    public UserPO selectById(@PathVariable Integer id) {
+    public UserPO selectById(@PathVariable  Long id) {
         return userService.selectById(id);
     }
 

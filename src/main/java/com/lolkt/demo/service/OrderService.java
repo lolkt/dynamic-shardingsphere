@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    OrderPO selectById(Integer id);
+    OrderPO selectById( Long id);
 
     List<OrderPO> selectAll();
 
