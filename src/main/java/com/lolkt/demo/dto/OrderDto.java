@@ -9,7 +9,7 @@ public class OrderDto {
     /**
      *
      */
-    private Integer customerId;
+    private Long customerId;
 
     /**
      * 备注

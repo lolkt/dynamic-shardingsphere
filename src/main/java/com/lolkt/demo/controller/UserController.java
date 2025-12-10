@@ -18,6 +18,7 @@ package com.lolkt.demo.controller;/*
 import com.lolkt.demo.dto.UserDto;
 import com.lolkt.demo.entity.UserPO;
 import com.lolkt.demo.service.UserService;
+import com.lolkt.demo.support.UidGeneratorHolder;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -48,6 +49,7 @@ public class UserController {
     @ApiOperation(value = "新增用户")
     public UserPO addUser(@RequestBody UserDto userDto) {
         UserPO user = new UserPO();
+        userDto.setId(UidGeneratorHolder.nextId());
         BeanUtils.copyProperties(userDto, user);
         userService.addUser(user);
         return user;

@@ -32,7 +32,7 @@ public interface OrderMapper {
     List<OrderPO> selectOrders();
 
     @Insert("insert into t_order (remark,customer_id) values (#{remark},#{customerId})")
-    boolean addOrder(@Param("remark") String remark, @Param("customerId") Integer customerId);
+    boolean addOrder(@Param("remark") String remark, @Param("customerId")  Long customerId);
 
     @Update("update t_order set name =#{name} where id =#{id}")
     void updateOrder(OrderPO Order);

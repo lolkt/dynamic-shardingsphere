@@ -9,7 +9,7 @@ public class OrderPO {
     /**
      *
      */
-    private Integer customerId;
+    private Long customerId;
 
     /**
      * 备注

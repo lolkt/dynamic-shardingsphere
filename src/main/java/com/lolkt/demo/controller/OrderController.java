@@ -30,7 +30,7 @@ public class OrderController {
     @PostMapping("/addOrder")
     public OrderPO addOrder(@RequestBody OrderDto OrderDto) {
         OrderPO Order = new OrderPO();
-        Order.setId(UidGeneratorHolder.nextId());
+        OrderDto.setId(UidGeneratorHolder.nextId());
         BeanUtils.copyProperties(OrderDto, Order);
         orderService.addOrder(Order);
         return Order;

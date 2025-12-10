@@ -1,46 +1,18 @@
 spring:
-
-#   动态数据源配置
+  # 动态数据源配置
   datasource:
     dynamic:
       primary: sharding
+      strict: false
       datasource:
+        # 百度 uid-generator 专用数据源
         uid:
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://192.168.1.116:3307/uid_center?useSSL=false
+          url: jdbc:mysql://192.168.1.116:3307/uid_center?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
           username: root
           password: dmyz@2025#
 
-  shardingsphere:
-    datasource:
-      names: ds-master
-      # 不需要分表的默认数据库库：主库
-      ds-master:
-        type: com.zaxxer.hikari.HikariDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql:///192.168.1.116:3307/tt_master?useSSL=false
-        username: root
-        password: dmyz@2025#
-
-    # 配置分表策略
-    sharding:
-      # 默认数据源，未分片的表默认执行库
-      default-data-source-name: ds
-      tables:
-
-        t_order:
-          # 配置数据节点，这里是chatid分表
-          actual-data-nodes: ds.t_order_${0..1}
-          database-strategy:
-            none: # 不分片
-          table-strategy:
-            inline:
-              sharding-column: customer_id
-              algorithm-expression: t_order_${customer_id % 2}
-
-    props:
-      sql:
-        show: true
-
-
-
+  # 排除 ShardingSphere 自动配置，使用自定义配置
+  autoconfigure:
+    exclude:
+      - org.apache.shardingsphere.spring.boot.ShardingSphereAutoConfiguration

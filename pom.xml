@@ -23,11 +23,15 @@
         <spring-cloud-alibaba.version>2.1.2.RELEASE</spring-cloud-alibaba.version>
         <spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
 
-        <redisson.version>3.11.5</redisson.version>
+
         <objenesis.version>3.2</objenesis.version>
         <mysql.version>8.0.28</mysql.version>
+
+
         <mybatis-plus.version>3.5.3.2</mybatis-plus.version>
+
         <shardingsphere.version>5.4.1</shardingsphere.version>
+        <snakeyaml.version>1.33</snakeyaml.version>
         <dynamic.datasource.version>3.6.1</dynamic.datasource.version>
         <kotlin.version>1.4.10</kotlin.version>
         <arms.version>1.7.3</arms.version>
@@ -43,18 +47,35 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--mybatis-plus依赖-->
+
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jsqlparser</artifactId>
+                    <groupId>com.github.jsqlparser</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!-- mybatis plus 代码生成器依赖 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
+
 
         <!-- mysql connector -->
         <dependency>
@@ -64,11 +85,16 @@
         </dependency>
 
 
-        <!-- sharding-jdbc -->
+        <!-- sharding-jdbc 5.x -->
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-jdbc-core</artifactId>
             <version>${shardingsphere.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
         </dependency>
 
         <!-- lombok: the java code brief tools -->
@@ -96,6 +122,16 @@
             <groupId>com.baidu.fsg</groupId>
             <artifactId>uid-generator</artifactId>
             <version>${uid-generator.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mybatis</artifactId>
+                    <groupId>org.mybatis</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mybatis-spring</artifactId>
+                    <groupId>org.mybatis</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

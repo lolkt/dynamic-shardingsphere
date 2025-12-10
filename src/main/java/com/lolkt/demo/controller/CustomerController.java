@@ -18,6 +18,7 @@ package com.lolkt.demo.controller;/*
 import com.lolkt.demo.dto.CustomerDto;
 import com.lolkt.demo.entity.CustomerPO;
 import com.lolkt.demo.service.CustomerService;
+import com.lolkt.demo.support.UidGeneratorHolder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,7 @@ public class CustomerController {
     @PostMapping("/addCustomer")
     public CustomerPO addCustomer(@RequestBody CustomerDto CustomerDto) {
         CustomerPO Customer = new CustomerPO();
+        CustomerDto.setId(UidGeneratorHolder.nextId());
         BeanUtils.copyProperties(CustomerDto, Customer);
         customerService.addCustomer(Customer);
         return Customer;

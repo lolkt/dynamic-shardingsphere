@@ -16,20 +16,14 @@
 package com.lolkt.demo.config;
 
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
-import lombok.SneakyThrows;
-import org.apache.shardingsphere.driver.api.yaml.YamlShardingSphereDataSourceFactory;
-import org.apache.shardingsphere.driver.jdbc.core.driver.ShardingSphereURLManager;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
 import javax.annotation.Resource;
@@ -38,44 +32,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 多数据源配置 - 整合 ShardingSphere 5.x 与 dynamic-datasource
+ * 
+ * 数据源说明：
+ * - sharding: 业务数据源，由 ShardingSphere 管理分库分表和读写分离
+ * - uid: 百度 uid-generator 专用数据源
+ * 
  * @author lolkt
  */
 @Configuration
-@ConditionalOnClass(DynamicDataSourceAutoConfiguration.class)
 @AutoConfigureBefore({DynamicDataSourceAutoConfiguration.class, SpringBootConfiguration.class})
 public class MyDataSourceConfiguration {
 
+    private final DynamicDataSourceProperties properties;
 
-    /**
-     * 分表数据源名称
-     */
-    public static final String SHARDING_DATA_SOURCE_NAME = "sharding";
-
-    /**
-     * 分表数据源名称
-     */
-    public static final String URL_PREFIX = "jdbc:shardingsphere:";
-
-
+    @Lazy
     @Resource
-    private DynamicDataSourceProperties dynamicDataSourceProperties;
+    private DataSource shardingDataSource;
 
-    @Resource
-    private DataSourceProperties dataSourceProperties;
-
+    public MyDataSourceConfiguration(DynamicDataSourceProperties properties) {
+        this.properties = properties;
+    }
 
     @Bean
     public DynamicDataSourceProvider dynamicDataSourceProvider() {
-
-        return new AbstractDataSourceProvider() {
-            @SneakyThrows
+        return new DynamicDataSourceProvider() {
             @Override
             public Map<String, DataSource> loadDataSources() {
-
-                DataSource dataSource = YamlShardingSphereDataSourceFactory.createDataSource(ShardingSphereURLManager.getContent(dataSourceProperties.getUrl(), URL_PREFIX));
-                Map<String, DataSource> dataSourceMap = new HashMap<>();
-                // 将 shardingjdbc 管理的数据源也交给动态数据源管理
-                dataSourceMap.put(SHARDING_DATA_SOURCE_NAME, dataSource);
+                Map<String, DataSource> dataSourceMap = new HashMap<>(4);
+                // 注册 ShardingSphere 业务数据源 (分库分表 + 读写分离)
+                dataSourceMap.put("sharding", shardingDataSource);
                 return dataSourceMap;
             }
         };
@@ -84,17 +70,16 @@ public class MyDataSourceConfiguration {
     /**
      * 将动态数据源设置为首选的
      * 当spring存在多个数据源时, 自动注入的是首选的对象
-     * 设置为主要的数据源之后，就可以支持shardingJdbc原生的配置方式了
      */
     @Primary
     @Bean
     public DataSource dataSource() {
         DynamicRoutingDataSource dataSource = new DynamicRoutingDataSource();
-        dataSource.setPrimary(dynamicDataSourceProperties.getPrimary());
-        dataSource.setStrict(dynamicDataSourceProperties.getStrict());
-        dataSource.setStrategy(dynamicDataSourceProperties.getStrategy());
-        dataSource.setP6spy(dynamicDataSourceProperties.getP6spy());
-        dataSource.setSeata(dynamicDataSourceProperties.getSeata());
+        dataSource.setPrimary(properties.getPrimary());
+        dataSource.setStrict(properties.getStrict());
+        dataSource.setStrategy(properties.getStrategy());
+        dataSource.setP6spy(properties.getP6spy());
+        dataSource.setSeata(properties.getSeata());
         return dataSource;
     }
 }
