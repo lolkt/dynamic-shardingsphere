@@ -19,6 +19,8 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +28,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,19 +36,23 @@ import java.util.Map;
  * 多数据源配置 - 整合 ShardingSphere 5.x 与 dynamic-datasource
  * 
  * 数据源说明：
- * - sharding: 业务数据源，由 ShardingSphere 管理分库分表和读写分离
+ * - sharding: 业务数据源，由 ShardingSphere 管理分库分表和读写分离 (可选，通过 sharding.enabled 控制)
  * - uid: 百度 uid-generator 专用数据源
  * 
  * @author lolkt
  */
+@Slf4j
 @Configuration
 @AutoConfigureBefore({DynamicDataSourceAutoConfiguration.class, SpringBootConfiguration.class})
 public class MyDataSourceConfiguration {
 
     private final DynamicDataSourceProperties properties;
 
+    /**
+     * ShardingSphere 数据源 (可选，当 sharding.enabled=true 时存在)
+     */
     @Lazy
-    @Resource
+    @Autowired(required = false)
     private DataSource shardingDataSource;
 
     public MyDataSourceConfiguration(DynamicDataSourceProperties properties) {
@@ -60,8 +65,15 @@ public class MyDataSourceConfiguration {
             @Override
             public Map<String, DataSource> loadDataSources() {
                 Map<String, DataSource> dataSourceMap = new HashMap<>(4);
-                // 注册 ShardingSphere 业务数据源 (分库分表 + 读写分离)
-                dataSourceMap.put("sharding", shardingDataSource);
+                
+                // 如果 ShardingSphere 数据源存在，则注册
+                if (shardingDataSource != null) {
+                    log.info("Registering ShardingSphere datasource as 'sharding'");
+                    dataSourceMap.put("sharding", shardingDataSource);
+                } else {
+                    log.info("ShardingSphere datasource not found, skipping registration");
+                }
+                
                 return dataSourceMap;
             }
         };

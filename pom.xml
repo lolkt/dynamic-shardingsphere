@@ -18,10 +18,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-boot.version>2.1.10.RELEASE</spring-boot.version>
-        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-        <spring-cloud-alibaba.version>2.1.2.RELEASE</spring-cloud-alibaba.version>
-        <spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
+
+
+        <!-- Spring 相关版本 -->
+        <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
+        <spring.cloud.version>Hoxton.SR12</spring.cloud.version>
+        <spring.cloud.alibaba.version>2.2.10-RC1</spring.cloud.alibaba.version>
+        <spring.cloud.starter.version>2.2.9.RELEASE</spring.cloud.starter.version>
 
 
         <objenesis.version>3.2</objenesis.version>
